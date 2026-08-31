@@ -66,8 +66,20 @@ main {
     display: flex;
     flex-direction: column;
     gap: 21px;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
+#info-panel * {
+    margin-left: 20px;
+}
+
+
 .slider-wrapper {
-    margin-left: 50px;
+    
+}
+
+a {
+    color: cyan;
+    text-decoration: wavy underline;
 }
