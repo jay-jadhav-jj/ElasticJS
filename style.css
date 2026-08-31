@@ -1,5 +1,6 @@
 * {
     font-family: Oswald, Arial, Helvetica, sans-serif;
+    font-size: 1rem;
     padding: 0px;
     margin: 0px;
 }
@@ -31,6 +32,7 @@ main {
     display: block;
     margin: 20px auto;
     text-decoration: underline;
+    font-size: 2em;
 }
 
 #credit {
@@ -38,6 +40,7 @@ main {
     inset: 0px;
     justify-self: right;
     margin: 20px 10px;
+    font-size: 1.5em;
 }
 
 #panel-wrapper {
@@ -91,4 +94,19 @@ a {
 
 ul, ol {
     list-style-position: inside;
+}
+
+#scene-buttons {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-content: center;
+    justify-content: flex-start;
+}
+
+#scene-buttons button {
+    aspect-ratio: 1 / 1;
+    width: 33px;
+    box-sizing: border-box;
 }
