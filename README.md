@@ -28,7 +28,6 @@ Here are steps on making a custom scene
 - On line 71, add the platforms you want into your scene, with the `Scene.addPlatform(Platform)` function. The constructor for platforms is `Platform(Color, X, Y, Width, Height)`. Make sure the scene's index is correct (`scenes[4]` by default).
 - And that's it. Now, if you press the 'C' button, it should load your custom scene.
 
-- 
 
 ## What can you do with ElasticJS
 ---
