@@ -20,10 +20,17 @@ class Scene {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    /** @type {HTMLCanvasElement} */
+    /** @type { HTMLCanvasElement } */
     const gamePanel = document.getElementById("game-panel");
     /** @type { CanvasRenderingContext2D }*/
     const ctx = gamePanel.getContext('2d');
+
+    /** @type { HTMLInputElement } */
+    const speedSlider = document.getElementById("plrSpeed");
+    /** @type { HTMLInputElement } */
+    const jumpForceSlider = document.getElementById("plrJumpForce");
+    /** @type { HTMLInputElement } */
+    const gravitySlider = document.getElementById("plrGravity");
 
 
     let scene = new Scene(floorHeight=50);
@@ -274,6 +281,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (key == " ") {
             controls.space = false;
         }
-    })
+    });
+
+    speedSlider.addEventListener("input", () => {
+        player.speed = speedSlider.value;
+    });
+
+    jumpForceSlider.addEventListener("input", () => {
+        player.jumpForce = jumpForceSlider.value;
+    });
+
+    gravitySlider.addEventListener("input", () => {
+        player.gravity = gravitySlider.value;
+    });
+
     gameLoop();
 });

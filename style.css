@@ -70,16 +70,25 @@ main {
     justify-content: flex-start;
 }
 
-#info-panel * {
-    margin-left: 20px;
+#info-panel > * {
+    margin-left: 40px;
 }
 
 
 .slider-wrapper {
-    
+    display: flex;
+    flex-direction: row;
+    width: 220px;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 a {
     color: cyan;
     text-decoration: wavy underline;
+    width: max-content;
+}
+
+ul, ol {
+    list-style-position: inside;
 }
