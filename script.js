@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const gravitySlider = document.getElementById("plrGravity");
     const sceneButtons = Array.from(document.querySelectorAll("#scene-buttons button"));
 
-    const scenes = [new Scene(50, 200, 500, 10),
-                           new Scene(50, 150, 400, 10),
-                           new Scene(50, 200, 600, 50),
-                           new Scene(10, 1000, 400, 10)
+    const scenes = [new Scene(50, 200, 400, 10),
+                           new Scene(50, 150, 300, 10),
+                           new Scene(50, 200, 500, 50),
+                           new Scene(10, 1000, 250, 10)
                            /* Add a custom scene here: new Scene(Floor Height, Player Speed, Player Jump Force, Player Gravity) */];
 
     scenes[0].addPlatform(new Platform("red", 400, 260, 40, 100));
