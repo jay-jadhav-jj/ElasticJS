@@ -1,1 +1,46 @@
+<!DOCTYPE html>
 
+<html>
+    <head>
+        <title>ElasticJS by Jay Jadhav</title>
+        <meta charset="UTF-8">
+
+        <link rel="stylesheet" href="style.css">
+
+        <!-- Oswald google font import -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <script src="script.js"></script>
+
+        <main>
+            <h1 id="title">ElasticJS</h1>
+
+            <h2 id="credit">By Jay Jadhav</h2>
+            <!--Built for 1280x585-->
+
+            <div id="panel-wrapper">
+                <canvas id="game-panel" width="760" height="410"></canvas>
+                <div id="info-panel">
+                    <p>
+                        <a>Github Page</a>
+                    </p>
+                    <div class="slider-wrapper">
+                        <label for="plrSpeed">Speed</label>
+                        <input type="range" id="plrSpeed" min="10" max="1000" value="200" step="10">
+                    </div>
+                    <div class="slider-wrapper">
+                        <label for="plrJumpForce">Jump Force</label>
+                        <input type="range" id="plrJumpForce" min="50" max="1300" value="500" step="50">
+                    </div>
+                    <div class="slider-wrapper">
+                        <label for="plrGravity">Gravity</label>
+                        <input type="range" id="plrGravity" min="1" max="50" value="10" step="1">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

@@ -1,1 +1,73 @@
+* {
+    font-family: Oswald, Arial, Helvetica, sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
 
+main {
+    --bg-color-1: black;
+    --bg-color-2: rgb(53, 53, 53);
+    background-image: conic-gradient(
+        var(--bg-color-1) 0deg 90deg,
+        var(--bg-color-2) 90deg 180deg,
+        var(--bg-color-1) 180deg 270deg,
+        var(--bg-color-2) 270deg 360deg
+    );
+    background-size: 130px 130px;
+    min-height: 100vh;
+    min-width: 100vw;
+    position: absolute;
+    inset: 0px;
+}
+
+#title, #credit {
+    width: max-content;
+    background: linear-gradient(to bottom right, rgb(80, 80, 80), silver);
+    background-clip: text;
+    color: transparent;
+}
+
+#title {
+    display: block;
+    margin: 20px auto;
+    text-decoration: underline;
+}
+
+#credit {
+    position: absolute;
+    inset: 0px;
+    justify-self: right;
+    margin: 20px 10px;
+}
+
+#panel-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-panel {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: white;
+    box-shadow: inset 0px 0px 10px black;
+    padding: 20px;
+}
+
+#info-panel {
+    height: 450px;
+    width: 380px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: inset 0px 0px 10px black;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+}
+
+.slider-wrapper {
+    margin-left: 50px;
+}
