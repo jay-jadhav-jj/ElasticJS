@@ -25,6 +25,7 @@ Every scene also has platforms, objects that the player can collide with, along 
 ---
 > [!IMPORTANT]
 > The game panel size is 760 x 410.
+> Remember that increasing the Y value makes objects go down, not up.
 
 You can easily create your own custom scenes. In the `scenes/` folder, you can create your own scenes.
 I also left a file named `custom.js` with comments to help you get started, along with other example scripts.   
