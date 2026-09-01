@@ -1,0 +1,4 @@
+This folder contains extra scenes that are not included in the default scenes.
+If you want to creating a custom scene, you can use these as starting points.
+Additionally, this is where you should add your own custom scenes.
+The process for created custom scenes is detailed on the github page.

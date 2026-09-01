@@ -1,25 +1,75 @@
-class Platform {
-    constructor(color, x, y, width, height) {
+export class Platform {
+    constructor(color, x, y, width, height, collision = true) {
         this.color = color;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.collision = collision;
     };
 };
 
-class Scene {
-    constructor(floorHeight, speed, jumpForce, gravity) {
+export class Scene {
+    constructor(floorHeight, speed, jumpForce, gravity, spawnX = 0, spawnY = 0) {
         this.floorHeight = floorHeight;
         this.speed = speed;
         this.jumpForce = jumpForce;
         this.gravity = gravity;
+        this.spawnX = spawnX;
+        this.spawnY = spawnY;
         this.platforms = new Array();
     };
 
     addPlatform(platform) {
         this.platforms.push(platform);
     }
+};
+
+const scenes = [new Scene(50, 200, 500, 10),
+                new Scene(50, 150, 400, 10, 32, 328),
+                new Scene(50, 200, 600, 50),
+                new Scene(10, 1000, 350, 10)];
+
+scenes[0].addPlatform(new Platform("red", 400, 260, 40, 100));
+scenes[0].addPlatform(new Platform("yellow", 500, 210, 40, 150));
+scenes[0].addPlatform(new Platform("blue", 600, 160, 40, 200));
+scenes[0].addPlatform(new Platform("green", 700, 110, 40, 40));
+
+scenes[1].addPlatform(new Platform("grey", 200, 230, 20, 130));
+scenes[1].addPlatform(new Platform("grey", 300, 160, 20, 160));
+scenes[1].addPlatform(new Platform("grey", 400, 90, 20, 230));
+scenes[1].addPlatform(new Platform("grey", 550, 150, 20, 170));
+scenes[1].addPlatform(new Platform("gold", 720, 100, 40, 30));
+
+scenes[2].addPlatform(new Platform("black", 100, 310, 70, 50));
+scenes[2].addPlatform(new Platform("black", 170, 260, 70, 100));
+scenes[2].addPlatform(new Platform("black", 240, 210, 70, 150));
+scenes[2].addPlatform(new Platform("black", 310, 160, 70, 200));
+scenes[2].addPlatform(new Platform("black", 380, 110, 70, 250));
+scenes[2].addPlatform(new Platform("black", 450, 60, 70, 300));
+scenes[2].addPlatform(new Platform("gold", 520, 50, 240, 310));
+
+scenes[3].addPlatform(new Platform("grey", 32, 0, 32, 368));
+scenes[3].addPlatform(new Platform("lightgrey", 54, 368, 10, 32, false));
+scenes[3].addPlatform(new Platform("turquoise", 710, 330, 50, 30));
+scenes[3].addPlatform(new Platform("turquoise", 64, 260, 50, 30));
+scenes[3].addPlatform(new Platform("turquoise", 710, 190, 50, 30));
+scenes[3].addPlatform(new Platform("turquoise", 64, 120, 50, 30));
+scenes[3].addPlatform(new Platform("gold", 710, 50, 50, 30));
+
+export function loadCustomScene(customScene, index) {
+    if (index < 0 || index > 4) {
+        alert("You have to overwrite a scene button (index 0-4). The 'C' button is at index 4.");
+        return;
+    };
+
+    if (index < scenes.length) {
+        scenes[index] = customScene;
+    } else {
+        scenes.push(customScene);
+    }
+
+    alert("Custom scene loaded succesfully!");
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,47 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /** @type { HTMLInputElement } */
     const gravitySlider = document.getElementById("plrGravity");
     const sceneButtons = Array.from(document.querySelectorAll("#scene-buttons button"));
-
-    const scenes = [new Scene(50, 200, 500, 10),
-                           new Scene(50, 150, 400, 10),
-                           new Scene(50, 200, 600, 50),
-                           new Scene(10, 1000, 350, 10)
-                           /* Add a custom scene here: new Scene(Floor Height, Player Speed, Player Jump Force, Player Gravity) */];
-
-    scenes[0].addPlatform(new Platform("red", 400, 260, 40, 100));
-    scenes[0].addPlatform(new Platform("yellow", 500, 210, 40, 150));
-    scenes[0].addPlatform(new Platform("blue", 600, 160, 40, 200));
-    scenes[0].addPlatform(new Platform("green", 700, 110, 40, 40));
-
-    scenes[1].addPlatform(new Platform("grey", 200, 230, 20, 130));
-    scenes[1].addPlatform(new Platform("grey", 300, 160, 20, 160));
-    scenes[1].addPlatform(new Platform("grey", 400, 90, 20, 230));
-    scenes[1].addPlatform(new Platform("grey", 550, 150, 20, 170));
-    scenes[1].addPlatform(new Platform("gold", 720, 100, 40, 30));
     
-    scenes[2].addPlatform(new Platform("black", 100, 310, 70, 50));
-    scenes[2].addPlatform(new Platform("black", 170, 260, 70, 100));
-    scenes[2].addPlatform(new Platform("black", 240, 210, 70, 150));
-    scenes[2].addPlatform(new Platform("black", 310, 160, 70, 200));
-    scenes[2].addPlatform(new Platform("black", 380, 110, 70, 250));
-    scenes[2].addPlatform(new Platform("black", 450, 60, 70, 300));
-    scenes[2].addPlatform(new Platform("gold", 520, 50, 240, 310));
-
-    scenes[3].addPlatform(new Platform("grey", 32, 0, 32, 368));
-    scenes[3].addPlatform(new Platform("turquoise", 710, 330, 50, 30));
-    scenes[3].addPlatform(new Platform("turquoise", 64, 260, 50, 30));
-    scenes[3].addPlatform(new Platform("turquoise", 710, 190, 50, 30));
-    scenes[3].addPlatform(new Platform("turquoise", 64, 120, 50, 30));
-    scenes[3].addPlatform(new Platform("gold", 710, 50, 50, 30));
-
-    /* 
-        Customise your custom scene over here, with the addPlatform function.
-
-        scenes[4].addPlatform(new Platform(Color, X, Y, Width, Height));
-
-        Add as many platforms as you'd like.
-    */
-
     let scene;
 
     let settings = {
@@ -119,6 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
         player.speed = scene.speed;
         player.jumpForce = scene.jumpForce;
         player.gravity = scene.gravity;
+        player.x = scene.spawnX;
+        player.y = scene.spawnY;
 
         speedSlider.value = scene.speed;
         jumpForceSlider.value = scene.jumpForce;
@@ -131,11 +143,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (scene.platforms.some(platform => {
-          if (player.y + player.diameter == platform.y) {
-            if ((player.x + player.diameter > platform.x) && (player.x < platform.x + platform.width)) {
-                return true;
+            if (!platform.collision) {
+                return;
             }
-          }  
+
+            if (player.y + player.diameter == platform.y) {
+                if ((player.x + player.diameter > platform.x) && (player.x < platform.x + platform.width)) {
+                    return true;
+                }
+            }  
         })) {
             return true;
         }
@@ -153,6 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         scene.platforms.forEach(platform => {
+            if (!platform.collision) {
+                return;
+            }
+
             //top
             if ((player.y + player.diameter > platform.y)) {
                 if ((player.x + player.diameter > platform.x) && (player.x < platform.x + platform.width)) {
@@ -252,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function gameLoop(currentTime) {
-        deltaTime = (currentTime - lastTime) / 1000;
+        var deltaTime = (currentTime - lastTime) / 1000;
 
         if (deltaTime == 0 || isNaN(deltaTime)) {
             deltaTime = 0;
@@ -361,8 +381,6 @@ document.addEventListener("DOMContentLoaded", () => {
         syncSceneStats();
         settings.controls = false;
         settings.collision = false;
-        player.x = 0;
-        player.y = 0;
         player.velocityY = 0;
         playerGhost = { ... player };
         settings.collision = true;
