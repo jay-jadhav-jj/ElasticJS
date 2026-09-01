@@ -1,4 +1,7 @@
-# Elastic JS  
+# Elastic JS   
+
+> [!IMPORTANT]
+> ElasticJS is built specifically for a 1280px x 585px screen. It may not function properly on devices with other screen sizes.   
 
 ## What is it?
 ---
