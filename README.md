@@ -20,6 +20,9 @@ Every scene also has platforms, objects that the player can collide with, along 
 
 ## Custom scenes 
 ---
+> [!IMPORTANT]
+> The game panel size is 760 x 410.
+
 You can easily create your own custom scenes. In the `script.js` file, you'll see some comments I left with placeholders
 to help make custom scenes.   
 
