@@ -18,7 +18,7 @@ On the webpage, there are sliders for you to adjust the player's speed, jump for
 ## Scenes
 ---
 Similar to Unity, there is a scene system I added.
-Each scene has a preset speed, jump force, and gravity value for the player.
+Each scene has a preset speed, jump force, gravity value, and spawn location for the player.
 Every scene also has platforms, objects that the player can collide with, along with a floor, set at a chosen height.   
 
 ## Custom scenes 
@@ -26,14 +26,21 @@ Every scene also has platforms, objects that the player can collide with, along 
 > [!IMPORTANT]
 > The game panel size is 760 x 410.
 
-You can easily create your own custom scenes. In the `script.js` file, you'll see some comments I left with placeholders
-to help make custom scenes.   
+You can easily create your own custom scenes. In the `scenes/` folder, you can create your own scenes.
+I also left a file named `custom.js` with comments to help you get started, along with other example scripts.   
 
-Here are steps on making a custom scene   
-- On line 43, add a new `Scene` object into the `scenes` list. The constructor is `Scene(Floor Height, Player Speed, Player Jump Force, Player Gravity);`
-- On line 71, add the platforms you want into your scene, with the `Scene.addPlatform(Platform)` function. The constructor for platforms is `Platform(Color, X, Y, Width, Height)`. Make sure the scene's index is correct (`scenes[4]` by default).
-- And that's it. Now, if you press the 'C' button, it should load your custom scene.
+Here are the steps on creating a custom scene
 
+- Fork the project and create a github site (Pages) or download the code and host it locally
+- Make sure your script is in the `scenes/` folder.
+- Import the `Platform` class, `Scene` class, and `loadCustomScene` function from `../script.js`.
+- Create a new `Scene` instance. The constructor is `(floorHeight, speed, jumpForce, gravity, spawnX = 0, spawnY = 0)`
+- Now, as many times as you want, you can add platforms to the scene, using the `.addPlatform` function, which accepts a `Platform`.
+- The constructor for the `Platform` class is `(color, x, y, width, height, collision = true)`.
+- When you are done customizing your scene, use the `loadCustomScene(scene, index)` function.
+- Depending on what index you pass, your scene will be assigned to a different scene button. Since there are five scene buttons, you can only use indexes between 0-4.
+- In `index.html`, you need to add your new script in. At line 17, you can use the comment placeholder to help you add your script.
+- If all the steps were followed correctly, the site should notify you accordingly.
 
 ## What can you do with ElasticJS
 ---
