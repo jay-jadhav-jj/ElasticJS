@@ -16,4 +16,4 @@ for (let i = 0; i < 11; i++) {
 bridge.addPlatform(new Platform("#8D6E63", 50, 255, 650, 10, false));
 bridge.addPlatform(new Platform("#8D6E63", 50, 235, 650, 10, false));
 
-loadCustomScene(bridge, 3);
+loadCustomScene(bridge, 4);
