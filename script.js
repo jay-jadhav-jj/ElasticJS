@@ -1,16 +1,22 @@
 export class Platform {
-    constructor(color, x, y, width, height, collision = true) {
+    constructor(color, x, y, width, height, collision = true, outline = true, action = null, cooldown = 0) {
         this.color = color;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.collision = collision;
+        this.outline = outline;
+        this.action = action;
+        this.cooldown = cooldown;
+        this.actionReady = true;
+        this.ghostX = x;
+        this.ghostY = y;
     };
 };
 
 export class Scene {
-    constructor(floorHeight, speed, jumpForce, gravity, spawnX = 0, spawnY = 0) {
+    constructor(floorHeight, speed, jumpForce, gravity, spawnX = 0, spawnY = 0, onLoad = null, onDestroy = null) {
         this.floorHeight = floorHeight;
         this.speed = speed;
         this.jumpForce = jumpForce;
@@ -18,12 +24,16 @@ export class Scene {
         this.spawnX = spawnX;
         this.spawnY = spawnY;
         this.platforms = new Array();
+        this.onLoad = onLoad;
+        this.onDestroy = onDestroy;
     };
 
     addPlatform(platform) {
         this.platforms.push(platform);
     }
 };
+
+let deltaTime = 0;
 
 const scenes = [new Scene(50, 200, 500, 10),
                 new Scene(50, 150, 400, 10, 32, 328),
@@ -68,9 +78,62 @@ export function loadCustomScene(customScene, index) {
     } else {
         scenes.push(customScene);
     }
-
+    
     alert("Custom scene loaded succesfully!");
 };
+
+export function getDeltaTime() {
+    return deltaTime;
+};
+
+let player = {
+    diameter: 32,
+    x: 0,
+    y: 0,
+    speed: 200,
+    velocityY: 0,
+    jumpForce: 500,
+    gravity: 10
+};
+
+export function getPlayerSpeed() {
+    return player.speed;
+};
+
+export function getPlayerJumpForce() {
+    return player.jumpForce;
+};
+
+export function getPlayerGravity() {
+    return player.gravity;
+};
+
+export function setPlayerSpeed(speed) {
+    if (typeof speed != "number") {
+        alert("Player speed must be a valid number");
+        return;
+    }
+
+    player.speed = speed;
+};
+
+export function setPlayerJumpForce(jumpForce) {
+    if (typeof jumpForce != "number") {
+        alert("Player jump force must be a valid number");
+        return;
+    }
+    
+    player.jumpForce = jumpForce;
+};
+
+export function setPlayerGravity(gravity) {
+    if (typeof gravity != "number") {
+        alert("Player gravity must be a valid number");
+        return;
+    }
+    
+    player.gravity = gravity;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     /** @type { HTMLCanvasElement } */
@@ -103,15 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
         space: false
     };
 
-    let player = {
-        diameter: 32,
-        x: 0,
-        y: 0,
-        speed: 200,
-        velocityY: 0,
-        jumpForce: 500,
-        gravity: 10
-    };
 
     let playerGhost = {
         diameter: 32,
@@ -136,6 +190,21 @@ document.addEventListener("DOMContentLoaded", () => {
         jumpForceSlider.value = scene.jumpForce;
         gravitySlider.value = scene.gravity;
     };
+
+    function platformAction(platform) {
+        if (platform.actionReady) {
+            if (typeof platform.action == "function") {
+                platform.action();
+                platform.actionReady = false;
+
+                if (platform.cooldown >= 0) {
+                    setTimeout(() => {
+                            platform.actionReady = true;
+                    }, platform.cooldown);
+                }
+            }
+        }
+    }
 
     function playerGrounded() {
         if (player.y + player.diameter == gamePanel.height - scene.floorHeight) {
@@ -176,8 +245,9 @@ document.addEventListener("DOMContentLoaded", () => {
             //top
             if ((player.y + player.diameter > platform.y)) {
                 if ((player.x + player.diameter > platform.x) && (player.x < platform.x + platform.width)) {
-                    if (playerGhost.y + playerGhost.diameter <= platform.y) {
+                    if (playerGhost.y + playerGhost.diameter <= platform.ghostY) {
                         player.y = platform.y - player.diameter;
+                        platformAction(platform);
                     }
                 }
             }
@@ -185,8 +255,9 @@ document.addEventListener("DOMContentLoaded", () => {
             //bottom
             if ((player.y < platform.y + platform.height)) {
                 if ((player.x + player.diameter > platform.x) && (player.x < platform.x + platform.width)) {
-                    if (playerGhost.y >= platform.y + platform.height) {
+                    if (playerGhost.y >= platform.ghostY + platform.height) {
                         player.y = platform.y + platform.height;
+                        platformAction(platform);
                     }
                 }
             }
@@ -194,8 +265,9 @@ document.addEventListener("DOMContentLoaded", () => {
             //left 
             if ((player.x + player.diameter > platform.x)) {
                 if ((player.y + player.diameter > platform.y) && (player.y < platform.y + platform.height)) {
-                    if (playerGhost.x + playerGhost.diameter <= platform.x) {
+                    if (playerGhost.x + playerGhost.diameter <= platform.ghostX) {
                         player.x = platform.x - player.diameter;
+                        platformAction(platform);
                     }
                 }
             }
@@ -203,8 +275,9 @@ document.addEventListener("DOMContentLoaded", () => {
             //right
             if ((player.x < platform.x + platform.width)) {
                 if ((player.y + player.diameter > platform.y) && (player.y < platform.y + platform.height)) {
-                    if (playerGhost.x >= platform.x + platform.width) {
+                    if (playerGhost.x >= platform.ghostX + platform.width) {
                         player.x = platform.x + platform.width;
+                        platformAction(platform);
                     }
                 }
             }
@@ -267,12 +340,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.fillStyle = platform.color;
         ctx.strokeStyle = "black";
         ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-        ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
+        if (platform.outline) {
+            ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
+        }
         ctx.closePath();
     };
 
     function gameLoop(currentTime) {
-        var deltaTime = (currentTime - lastTime) / 1000;
+        deltaTime = (currentTime - lastTime) / 1000;
 
         if (deltaTime == 0 || isNaN(deltaTime)) {
             deltaTime = 0;
@@ -291,6 +366,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         lastTime = currentTime;
         playerGhost = { ...player };
+        scene.platforms.forEach(platform => {
+            platform.ghostX = platform.x;
+            platform.ghostY = platform.y;
+        });
 
         requestAnimationFrame(gameLoop);
     };
@@ -361,20 +440,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     speedSlider.addEventListener("input", () => {
         player.speed = parseInt(speedSlider.value);
+        speedSlider.blur();
     });
 
     jumpForceSlider.addEventListener("input", () => {
         player.jumpForce = parseInt(jumpForceSlider.value);
+        jumpForceSlider.blur();
     });
 
     gravitySlider.addEventListener("input", () => {
         player.gravity = parseInt(gravitySlider.value);
+        gravitySlider.blur();
     });
 
     function setScene(sceneIndex) {
         if (sceneIndex < 0 || sceneIndex >= scenes.length) {
             alert("Invalid scene index! Check the github page for a guide on creating custom scenes!");
             return;
+        }
+
+        if (scene && typeof scene.onDestroy == "function") {
+            scene.onDestroy();
         }
 
         scene = scenes[sceneIndex];
@@ -384,6 +470,10 @@ document.addEventListener("DOMContentLoaded", () => {
         player.velocityY = 0;
         playerGhost = { ... player };
         settings.collision = true;
+        if (typeof scene.onLoad == "function") {
+            scene.onLoad();
+        }
+        
         setTimeout(() => {
             settings.controls = true;
         }, 1000);
