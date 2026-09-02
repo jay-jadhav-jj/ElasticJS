@@ -35,13 +35,22 @@ Here are the steps on creating a custom scene
 - Fork the project and create a github site (Pages) or download the code and host it locally
 - Make sure your script is in the `scenes/` folder.
 - Import the `Platform` class, `Scene` class, and `loadCustomScene` function from `../script.js`.
-- Create a new `Scene` instance. The constructor is `(floorHeight, speed, jumpForce, gravity, spawnX = 0, spawnY = 0)`
+- Create a new `Scene` instance. The constructor is `(floorHeight, speed, jumpForce, gravity, spawnX = 0, spawnY = 0, onLoad = null, onDestroy = null)`
 - Now, as many times as you want, you can add platforms to the scene, using the `.addPlatform` function, which accepts a `Platform`.
-- The constructor for the `Platform` class is `(color, x, y, width, height, collision = true)`.
+- The constructor for the `Platform` class is `(color, x, y, width, height, collision = true, outline = true, action = null, cooldown = 0)`.
 - When you are done customizing your scene, use the `loadCustomScene(scene, index)` function.
 - Depending on what index you pass, your scene will be assigned to a different scene button. Since there are five scene buttons, you can only use indexes between 0-4.
 - In `index.html`, you need to add your new script in. At line 17, you can use the comment placeholder to help you add your script.
 - If all the steps were followed correctly, the site should notify you accordingly.
+
+> [!IMPORTANT]
+> I recently updated the scene creation functions and there are a lot more features now.   
+>  - Platform Actions: platforms can be given functions, along with a cooldown (in milleseconds), which they will call whenever they collide with the player. Put a cooldown of `-1`, and then the action is only called once. Keep in mind that, as with all properties, these can be modified dynamically.
+>  - Scene.onLoad + Scene.onDestroy: If these functions are set, they'll be called when the scene is loaded or exited, respectively.
+>  - getDeltaTime: returns the delta time between frames. This is important to ensure consistency between devices and frame rates. For example, when moving a platform, multiply the movement speed by the delta time to make it the same rate of movement no matter the refresh rate.
+>  - getPlayerSpeed, getPlayerJumpForce, getPlayerGravity: allows you to get the player's current speed, jump force, and gravity.
+>  - setPlayerSpeed(speed), setPlayerJumpForce(jumpForce), setPlayerGravity(gravity): allows you to set the player's speed, jump force, and gravity. This can be used along with the `get` counterpart functions to restrict the player's attributes to a certain range or value.
+>  - You can see most of these features being put to use in `scenes/elastic_dash.js`.   
 
 ## What can you do with ElasticJS
 ---
