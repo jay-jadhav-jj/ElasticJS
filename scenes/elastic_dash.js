@@ -2,9 +2,10 @@ import { Platform, Scene, loadCustomScene, getDeltaTime, setPlayerSpeed, setPlay
 
 let scene = new Scene(10, 100, 500, 20, 0, 368);
 
-let firstLoad = true;
 let spawnCount = 0;
 let frozen = false;
+let spawnTimeoutId = null;
+let animationFrameId = null;
 
 let speedProgression = new Map();
 
@@ -32,10 +33,15 @@ spawnRateProgression.set(50, 900);
 
 function onLoad() {
     let spikes = []
-
+    
+    frozen = false;
     spawnCount = 0;
 
     function spawnLoop() {
+        if (frozen) {
+            return;
+        }
+
         var height = 20;
             
         for (const [key, value] of heightProgression) {
@@ -49,6 +55,14 @@ function onLoad() {
             frozen = true;
             setPlayerGravity(0);
             setPlayerJumpForce(0);
+            if (spawnTimeoutId) {
+                clearTimeout(spawnTimeoutId);
+                spawnTimeoutId = null;
+            }
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
         }, -1);
         scene.addPlatform(spike);
         spikes.push(spike);
@@ -62,12 +76,12 @@ function onLoad() {
                 }
             };
 
-        setTimeout(spawnLoop, spawnRate);
+        spawnTimeoutId = setTimeout(spawnLoop, spawnRate);
     };
 
     function gameLoop() {
         if (frozen) {
-            return
+            return;
         };
         spikes.forEach(spike => {
             var speed = 125;
@@ -85,19 +99,16 @@ function onLoad() {
             return spike.x + spike.width > 0;
         });
 
-        requestAnimationFrame(gameLoop);
+        animationFrameId = requestAnimationFrame(gameLoop);
     };
 
     let startPlatform = new Platform("lime", 132, 390, 32, 10, true, false, () => {
         startPlatform.color = "rgba(0,0,0,0)";
         startPlatform.collision = false;
         setPlayerSpeed(0);
-        if (firstLoad) {
-            spawnLoop();
-            gameLoop();
-        } else {
-            frozen = false;
-        }
+        frozen = false;
+        spawnLoop();
+        gameLoop();
     });
 
     scene.addPlatform(startPlatform);
@@ -107,6 +118,14 @@ scene.onLoad = onLoad;
 scene.onDestroy = () => {
     scene.platforms = [];
     frozen = true;
+    if (spawnTimeoutId) {
+        clearTimeout(spawnTimeoutId);
+        spawnTimeoutId = null;
+    }
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
 };
 
 loadCustomScene(scene, 4);
