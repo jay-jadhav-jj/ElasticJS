@@ -46,10 +46,10 @@ Here are the steps on creating a custom scene
 > [!IMPORTANT]
 > I recently updated the scene creation functions and there are a lot more features now.   
 >  - Platform Actions: platforms can be given functions, along with a cooldown (in milliseconds), which they will call whenever they collide with the player. Put a cooldown of `-1`, and then the action is only called once. Keep in mind that, as with all properties, these can be modified dynamically.
->  - Scene.onLoad + Scene.onDestroy: If these functions are set, they'll be called when the scene is loaded or exited, respectively.
->  - getDeltaTime: returns the delta time between frames. This is important to ensure consistency between devices and frame rates. For example, when moving a platform, multiply the movement speed by the delta time to make it the same rate of movement no matter the refresh rate.
->  - getPlayerSpeed, getPlayerJumpForce, getPlayerGravity: allows you to get the player's current speed, jump force, and gravity.
->  - setPlayerSpeed(speed), setPlayerJumpForce(jumpForce), setPlayerGravity(gravity): allows you to set the player's speed, jump force, and gravity. This can be used along with the `get` counterpart functions to restrict the player's attributes to a certain range or value.
+>  - `Scene.onLoad` + `Scene.onDestroy`: If these functions are set, they'll be called when the scene is loaded or exited, respectively.
+>  - `getDeltaTime`: returns the delta time between frames. This is important to ensure consistency between devices and frame rates. For example, when moving a platform, multiply the movement speed by the delta time to make it the same rate of movement no matter the refresh rate.
+>  - `getPlayerSpeed`, `getPlayerJumpForce`, `getPlayerGravity`: allows you to get the player's current speed, jump force, and gravity.
+>  - `setPlayerSpeed(speed)`, `setPlayerJumpForce(jumpForce)`, `setPlayerGravity(gravity)`: allows you to set the player's speed, jump force, and gravity. This can be used along with the `get` counterpart functions to restrict the player's attributes to a certain range or value.
 >  - You can see most of these features being put to use in `scenes/elastic_dash.js`.   
 
 ## What can you do with ElasticJS
